@@ -2,7 +2,7 @@
 Generate ansible dynamic inventory from static inventory.  
 Optionally, Replace the host list of ansible static inventory with ServiceAddress registered in consul service.  
 [![PyPI version](https://badge.fury.io/py/ansible-dynamic-inventory.svg)](https://badge.fury.io/py/ansible-dynamic-inventory)
-[![Python Version]https://img.shields.io/badge/python-2.7-blue.svg](https://www.python.org/download/releases/2.7/)
+![Python Version](https://img.shields.io/badge/python-2.7-blue.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # References
