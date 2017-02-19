@@ -1,0 +1,4 @@
+
+[all:vars]
+datacenter='vagrant'
+net_cidr = '10.10.10.0/24'
