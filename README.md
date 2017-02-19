@@ -1,14 +1,14 @@
-# python-ansible-dynamic-inventory
+# ansible-dynamic-inventory
 Generate ansible dynamic inventory from static inventory.  
 Optionally, Replace the host list of ansible static inventory with ServiceAddress registered in consul service.  
 [![PyPI](https://img.shields.io/pypi/v/nine.svg?style=plastic)](https://pypi.python.org/pypi?%3Aaction=pkg_edit&name=ansible-dynamic-inventory)
-https://img.shields.io/badge/python-2.7-blue.svg
+[![PyPI]https://img.shields.io/badge/python-2.7-blue.svg]
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # References
-  [Ansible inventory](http://docs.ansible.com/ansible/intro_inventory.html)
-  [Ansible Dynamic Inventory](http://docs.ansible.com/ansible/intro_dynamic_inventory.html)
-  [Consul Catalog Service](https://www.consul.io/docs/agent/http/catalog.html#catalog_service)
+  [Ansible inventory](http://docs.ansible.com/ansible/intro_inventory.html)  
+  [Ansible Dynamic Inventory](http://docs.ansible.com/ansible/intro_dynamic_inventory.html)  
+  [Consul Catalog Service](https://www.consul.io/docs/agent/http/catalog.html#catalog_service)  
 
 # Installation
     $ yum install gcc python-devel openssl-devel
