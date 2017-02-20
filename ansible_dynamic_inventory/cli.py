@@ -42,11 +42,11 @@ def _replace_with_consul_service(config, ansible_group_dict):
     if len(consu_url) == 0:
         return ansible_group_dict
     replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
-    for group_name in ansible_group_dict.keys():
-        url = config.get("consul", "url") + "/catalog/service/" + group_name
+    for v in ansible_group_dict.keys():
+        url = config.get("consul", "url") + "/catalog/service/" + v
         res = requests.get(url).json()
         if len(res) or replace_force_zero_hosts != False:
-            ansible_group_dict[group_name] = { "hosts": map(lambda x: x["ServiceAddress"], res) }
+            ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res)
     return ansible_group_dict
 
 def main():
