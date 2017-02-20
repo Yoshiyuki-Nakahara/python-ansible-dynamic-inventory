@@ -7,7 +7,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 
 # Assumed Use Case
   - Dynamic inventory conversion from static inventory  
-  - In the service operated using consul, inventory is dynamically generated without rewriting static inventory when host information changes dynamically, such as automatic failover
+  - In the service operated using [Consul](https://www.consul.io/), inventory is dynamically generated without rewriting static inventory when host information changes dynamically, such as automatic failover
 
 # References
   [Ansible inventory](http://docs.ansible.com/ansible/intro_inventory.html)  
