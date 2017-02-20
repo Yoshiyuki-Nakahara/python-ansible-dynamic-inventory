@@ -38,12 +38,12 @@ def _get_ansible_group_hosts(config, ansible_static_inventory):
     return ansible_groups
 
 def _replace_with_consul_service(config, ansible_group_dict):
-    consu_url = config.get("consul", "url")
-    if len(consu_url) == 0:
-        return ansible_group_dict
     replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
+    consul_url = config.get("consul", "url")
+    if len(consul_url) == 0:
+        return ansible_group_dict
     for v in ansible_group_dict.keys():
-        url = config.get("consul", "url") + "/catalog/service/" + v
+        url = consul_url + "/catalog/service/" + v
         res = requests.get(url).json()
         if len(res) or replace_force_zero_hosts != False:
             ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res)
