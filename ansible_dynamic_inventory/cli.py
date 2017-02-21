@@ -15,6 +15,7 @@ def _parse_program_args():
     description = u"{0} [Options]\nDetailed options -h or --help".format(__file__)
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--version', action='version', version=_get_version())
+    parser.add_argument('--list', action='store_true')
     parser.parse_args()
 
 def _load_config(filename):
