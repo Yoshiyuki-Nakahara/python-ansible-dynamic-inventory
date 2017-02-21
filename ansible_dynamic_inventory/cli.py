@@ -6,6 +6,17 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
 from ansible.inventory import Inventory
 
+def _get_version():
+    version_txt_path = os.path.abspath(os.path.dirname(__file__)) + '/version.txt'
+    return open(version_txt_path).read().splitlines()[0]
+
+def _parse_program_args():
+    # only --version
+    description = u"{0} [Options]\nDetailed options -h or --help".format(__file__)
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('--version', action='version', version=_get_version())
+    parser.parse_args()
+
 def _load_config(filename):
     config = configparser.ConfigParser()
     config.read(filename)
@@ -49,6 +60,7 @@ def _replace_with_consul_service(config, ansible_group_dict):
     return ansible_group_dict
 
 def main():
+    argparse.add_
     config_path = "/etc/ansible_dynamic_inventory.ini"
     config = _load_config(config_path)
     ansible_static_inventory = _load_ansible_staitc_inventory(config)
