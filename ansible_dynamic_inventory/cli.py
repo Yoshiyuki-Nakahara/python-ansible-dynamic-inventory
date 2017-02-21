@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, argparse, requests, json
+import os, argparse, requests, json, re
 import configparser
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
@@ -37,14 +37,15 @@ def _get_ansible_group_hosts(config, ansible_static_inventory):
     return ansible_groups
 
 def _replace_with_consul_service(config, ansible_group_dict):
-    replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
-    consul_url = config.get("consul", "url") + "/catalog/service/"
+    consul_url = config.get("consul", "url")
     if len(consul_url) == 0:
         return ansible_group_dict
+
+    replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
     for v in ansible_group_dict.keys():
-        res = requests.get(consul_url + v).json()
-        if len(res) or replace_force_zero_hosts != False:
-            ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res)
+        res = requests.get(consul_url + "/catalog/service/" + v)
+        if res.status_code == requests.codes.ok or replace_force_zero_hosts != False:
+            ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res.json())
     return ansible_group_dict
 
 def main():
