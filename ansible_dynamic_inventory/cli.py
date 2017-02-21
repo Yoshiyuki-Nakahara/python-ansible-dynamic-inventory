@@ -60,7 +60,6 @@ def _replace_with_consul_service(config, ansible_group_dict):
     return ansible_group_dict
 
 def main():
-    argparse.add_
     config_path = "/etc/ansible_dynamic_inventory.ini"
     config = _load_config(config_path)
     ansible_static_inventory = _load_ansible_staitc_inventory(config)

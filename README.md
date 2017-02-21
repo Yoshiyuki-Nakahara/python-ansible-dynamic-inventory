@@ -6,7 +6,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 ![Python Version](https://img.shields.io/badge/python-2.7-blue.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Assumed Use Case\
+# Assumed Use Case
   - Dynamic inventory conversion from static inventory
   - In the service operated using [Consul](https://www.consul.io/), inventory is dynamically generated without rewriting static inventory when host information changes dynamically, such as automatic failover
 
