@@ -26,7 +26,7 @@ def _load_ansible_staitc_inventory(config):
     filename = config.get("ansible", "static_inventory_path")
     inventory = Inventory(
         loader = DataLoader(),
-        variable_manager = VariableManavertger(),
+        variable_manager = VariableManager(),
         host_list = filename
     )
     return inventory
