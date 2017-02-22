@@ -1,9 +1,10 @@
 # ansible-dynamic-inventory
 Generate ansible dynamic inventory from static inventory.
 Optionally, Replace the host list of ansible static inventory with ServiceAddress registered in consul service.  
-[![Build Status](https://travis-ci.org/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory.svg?branch=master)](https://travis-ci.org/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory)
 [![PyPI version](https://badge.fury.io/py/ansible-dynamic-inventory.svg)](https://badge.fury.io/py/ansible-dynamic-inventory)
 ![Python Version](https://img.shields.io/badge/python-2.7-blue.svg)
+[![Build Status](https://travis-ci.org/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory.svg?branch=master)](https://travis-ci.org/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory)
+[![Code Health](https://landscape.io/github/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory/master/landscape.svg?style=plastic)](https://landscape.io/github/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory/master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Assumed Use Case
