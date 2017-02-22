@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, argparse, requests, json, re
+import os, argparse, requests, json
 import configparser
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
@@ -26,12 +26,12 @@ def _load_ansible_staitc_inventory(config):
     filename = config.get("ansible", "static_inventory_path")
     inventory = Inventory(
         loader = DataLoader(),
-        variable_manager = VariableManager(),
+        variable_manager = VariableManavertger(),
         host_list = filename
     )
     return inventory
 
-def _get_ansible_group_hosts(config, ansible_static_inventory):
+def _convert_to_dynamic_inventory(ansible_static_inventory):
     ansible_groups = dict()
     for v in ansible_static_inventory.get_groups():
         ansible_groups[v] = dict()
@@ -65,7 +65,7 @@ def main():
         config_path = "/etc/ansible_dynamic_inventory.ini"
         config = _load_config(config_path)
         ansible_static_inventory = _load_ansible_staitc_inventory(config)
-        ansible_group_dict = _get_ansible_group_hosts(config, ansible_static_inventory)
+        ansible_group_dict = _convert_to_dynamic_inventory(ansible_static_inventory)
         ansible_group_dict = _replace_with_consul_service(config, ansible_group_dict)
         ansible_dynamic_inventory = json.dumps(ansible_group_dict)
         print(ansible_dynamic_inventory)
