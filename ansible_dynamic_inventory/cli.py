@@ -11,12 +11,11 @@ def _get_version():
     return open(version_txt_path).read().splitlines()[0]
 
 def _parse_program_args():
-    # only --version
     description = u"{0} [Options]\nDetailed options -h or --help".format(__file__)
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--version', action='version', version=_get_version())
-    parser.add_argument('--list', action='store_true')
-    parser.parse_args()
+    parser.add_argument('--list', action='store_true', help='print dynamic inventory')
+    return vars(parser.parse_args())
 
 def _load_config(filename):
     config = configparser.ConfigParser()
@@ -56,19 +55,20 @@ def _replace_with_consul_service(config, ansible_group_dict):
     replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
     for v in ansible_group_dict.keys():
         res = requests.get(consul_url + "/catalog/service/" + v)
-        if res.status_code == requests.codes.ok or replace_force_zero_hosts != False:
+        if res.status_code == requests.codes.ok and (len(res.json()) or replace_force_zero_hosts == True):
             ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res.json())
     return ansible_group_dict
 
 def main():
-    _parse_program_args()
-    config_path = "/etc/ansible_dynamic_inventory.ini"
-    config = _load_config(config_path)
-    ansible_static_inventory = _load_ansible_staitc_inventory(config)
-    ansible_group_dict = _get_ansible_group_hosts(config, ansible_static_inventory)
-    ansible_group_dict = _replace_with_consul_service(config, ansible_group_dict)
-    ansible_dynamic_inventory = json.dumps(ansible_group_dict)
-    print ansible_dynamic_inventory
+    args = _parse_program_args()
+    if args["list"]:
+        config_path = "/etc/ansible_dynamic_inventory.ini"
+        config = _load_config(config_path)
+        ansible_static_inventory = _load_ansible_staitc_inventory(config)
+        ansible_group_dict = _get_ansible_group_hosts(config, ansible_static_inventory)
+        ansible_group_dict = _replace_with_consul_service(config, ansible_group_dict)
+        ansible_dynamic_inventory = json.dumps(ansible_group_dict)
+        print ansible_dynamic_inventory
 
 if __name__ == '__main__':
     main()

@@ -40,7 +40,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 
 # Usage
     # Stand alone execution
-    $ /usr/bin/ansible-dynamic-inventory
+    $ /usr/bin/ansible-dynamic-inventory --list
 
     # As Ansible Dynamic Inventory execution
     $ ansible-playbook --inventory /usr/bin/ansible-dynamic-inventory /path/to/playbook.yml
