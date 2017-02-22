@@ -68,7 +68,7 @@ def main():
         ansible_group_dict = _get_ansible_group_hosts(config, ansible_static_inventory)
         ansible_group_dict = _replace_with_consul_service(config, ansible_group_dict)
         ansible_dynamic_inventory = json.dumps(ansible_group_dict)
-        print ansible_dynamic_inventory
+        print(ansible_dynamic_inventory)
 
 if __name__ == '__main__':
     main()
