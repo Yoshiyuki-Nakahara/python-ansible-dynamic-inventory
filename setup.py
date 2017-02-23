@@ -17,11 +17,15 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+
 def _get_requires():
     return open('requirements.txt').read().splitlines()
 
+
 def _get_version():
-    return open('ansible_dynamic_inventory/__version__.txt').read().splitlines()[0]
+    version_txt_path = 'ansible_dynamic_inventory/__version__.txt'
+    return open(version_txt_path).read().splitlines()[0]
+
 
 setup(
     name='ansible-dynamic-inventory',
@@ -35,7 +39,8 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/Yoshiyuki-Nakahara/python-ansible-dynamic-inventory',
+    url='https://github.com/Yoshiyuki-Nakahara \
+         /python-ansible-dynamic-inventory',
 
     # Author details
     author='Yoshiyuki-Nakahara',
@@ -108,7 +113,9 @@ setup(
     # need to place data files outside of your packages. See:
     # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
-    data_files=[('/etc', ['ansible_dynamic_inventory/ansible_dynamic_inventory.ini'])],
+    data_files=[
+        ('/etc', ['ansible_dynamic_inventory/ansible_dynamic_inventory.ini'])
+    ],
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
