@@ -13,19 +13,18 @@ class AnsibleDynamicInventory:
         if filename is None:
             for v in sys.path:
                 path = v + '/ansible_dynamic_inventory/ansible_dynamic_inventory.ini'
-                if os.path.exists( path ):
+                if os.path.exists(path):
                     filename = path
                     break
+
         config = configparser.ConfigParser()
         config.read(filename)
         return config
-
 
     def load_ansible_staitc_inventory(self, config):
         filename = config.get("ansible", "static_inventory_path")
         inventory = Inventory(DataLoader(), VariableManager(), filename)
         return inventory
-
 
     def convert_to_dynamic_inventory(aelf, ansible_static_inventory):
         ansible_groups = dict()
@@ -42,7 +41,6 @@ class AnsibleDynamicInventory:
             if len(group_children):
                 ansible_groups[v]["children"] = map(str, group_children)
         return ansible_groups
-
 
     def replace_with_consul_service(self, config, ansible_group_dict):
         consul_url = config.get("consul", "url")
