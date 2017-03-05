@@ -25,7 +25,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
   If the group name written in the ansible static inventory and the service name registered in the consul service are the same, the host name is replaced.
 
 # Configuration
-    # vi /etc/ansible_dynamic_inventory.ini
+    # vi ${module_installed_path}/ansible_dynamic_inventory.ini
 
     [ansible]
     # path to inventory file or directory
@@ -43,7 +43,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
     # Stand alone execution
     $ /usr/bin/ansible-dynamic-inventory --list
 
-    # As Ansible Dynamic Inventory execution
+    # As Ansible Dynamic Inventory executionw
     $ ansible-playbook --inventory /usr/bin/ansible-dynamic-inventory /path/to/playbook.yml
 
 # Stand alone execution result example
