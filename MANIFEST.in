@@ -4,10 +4,10 @@ include README.md
 
 # Include the module file
 include requirements.txt
+include ansible_dynamic_inventory/ansible_dynamic_inventory.ini
 
 # Include the data files
 # recursive-include data *
-recursive-include ansible_dynamic_inventory *.ini
 
 # If using Python 2.6 or less, then have to include package data, even though
 # it's already declared in setup.py
