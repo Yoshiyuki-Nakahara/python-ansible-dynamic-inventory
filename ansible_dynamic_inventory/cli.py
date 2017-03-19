@@ -23,10 +23,9 @@ def main():
         adi = AnsibleDynamicInventory()
         config = adi.load_config(args['config'])
         ansible_static_inventory = adi.load_ansible_staitc_inventory(config)
-        ansible_group_dict = adi.convert_to_dynamic_inventory(ansible_static_inventory)
-        ansible_group_dict = adi.replace_with_consul_service(config, ansible_group_dict)
-        ansible_dynamic_inventory = json.dumps(ansible_group_dict)
-        print(ansible_dynamic_inventory)
+        ansible_dynamic_inventory = adi.convert_to_dynamic_inventory(ansible_static_inventory)
+        ansible_dynamic_inventory = adi.replace_with_consul_service(config, ansible_dynamic_inventory)
+        print(json.dumps(ansible_dynamic_inventory, indent=2))
 
 
 if __name__ == '__main__':
