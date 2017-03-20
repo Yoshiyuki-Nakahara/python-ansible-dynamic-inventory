@@ -1,6 +1,6 @@
 
 [mysql_replication_master]
-10.10.10.12
+10.10.10.12 hostvar=dummy
 
 [mysql_replication_slave]
 10.10.10.13
