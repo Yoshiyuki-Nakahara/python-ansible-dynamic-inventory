@@ -168,9 +168,9 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
       all_hosts - 10.10.10.15
       all_hosts - 10.10.10.11
       class all_vars
-      class all_children - ungrouped
-      class all_children - _mysql_replication_config
-      class all_children - mysql_backup_storage
+      all_children - ungrouped
+      all_children - _mysql_replication_config
+      all_children - mysql_backup_storage
     }
     class all_vars {
       "datacenter": "vagrant"
@@ -183,10 +183,10 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
       _mysql_replication_config_hosts - 10.10.10.15
       _mysql_replication_config_hosts - 10.10.10.11
       class _mysql_replication_config_vars
-      class _mysql_replication_config_children - mysql_replication_master
-      class _mysql_replication_config_children - mysql_replication_slave
-      class _mysql_replication_config_children - mysql_replication_backup
-      class _mysql_replication_config_children - mysql_failover
+      _mysql_replication_config_children - mysql_replication_master
+      _mysql_replication_config_children - mysql_replication_slave
+      _mysql_replication_config_children - mysql_replication_backup
+      _mysql_replication_config_children - mysql_failover
     }
     class _mysql_replication_config_vars {
       "mysql_replication_user": "root"

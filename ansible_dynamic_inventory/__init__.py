@@ -88,7 +88,7 @@ class AnsibleDynamicInventory:
                 if v.has_key("children"):
                     for children_group_name in v['children']:
                         children_group_name = re.sub(group_name_regex, '_', children_group_name) # use character limit for plantuml
-                        group_text += "  class " + group_name + "_children - " + children_group_name + "\n"
+                        group_text += "  " + group_name + "_children - " + children_group_name + "\n"
                 groups_text += "package " + group_name + " {" + group_text + "}\n"
                 groups_text += group_vars_text
         plantuml_text = hosts_text + "\n" + groups_text
