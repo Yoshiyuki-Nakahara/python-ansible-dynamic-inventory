@@ -8,7 +8,9 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Assumed Use Case
-  - Dynamic inventory conversion from static inventory
+  - Dynamic inventory conversion from Static inventory
+  - Merge Dynamic inventory into Static inventory
+    cf. gce.py(dynamic inventory) + group_vars(static inventory)
   - In the service operated using [Consul](https://www.consul.io/), inventory is dynamically generated without rewriting static inventory when host information changes dynamically, such as automatic failover
   - Confirm the inventory structure with plantuml
 
@@ -19,7 +21,7 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 
 # Installation
     $ yum install gcc python-devel openssl-devel python-pip
-    $ pip install --upgrade pip setuptools
+    $ pip install --upgrade pip setuptools (optional)
     $ pip install ansible-dynamic-inventory
 
 # Prerequisite of Replace with Consul Service
@@ -29,8 +31,15 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
     # vi ${module_installed_path}/ansible_dynamic_inventory.ini
 
     [ansible]
-    # path to inventory file or directory
+    # If both static_inventory_path and dynamic_inventory_path are specified,
+    # merge dynamic_inventory into static_inventory
+    # Either static_inventory_path or dynamic_inventory_path must not be empty
+
+    # path to static inventory file or directory
     static_inventory_path = /path/to/ansible_inventory
+    # path to dynamic inventory file
+    #dynamic_inventory_path = ./gce.py
+    dynamic_inventory_path =
 
     [consul]
     #url = http://localhost:8500/v1
@@ -42,18 +51,18 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 
 # Usage
     # Stand alone execution
-    $ /usr/bin/ansible-dynamic-inventory --list
+    $ ansible-dynamic-inventory --list
 
     # As Ansible Dynamic Inventory execution
-    $ ansible-playbook --inventory /usr/bin/ansible-dynamic-inventory /path/to/playbook.yml
+    $ ansible-playbook --inventory ansible-dynamic-inventory /path/to/playbook.yml
 
     # outut in platuml format
-    /usr/bin/ansible-dynamic-inventory --plantuml
+    ansible-dynamic-inventory --plantuml
 
 # Stand alone execution example
     ex. ansible:static_inventory_path = ${this repository}/sample_inventory
 
-    $ /usr/bin/ansible-dynamic-inventory --list
+    $ ansible-dynamic-inventory --list
     {
       "all": {
         "hosts": [

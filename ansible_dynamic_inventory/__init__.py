@@ -4,14 +4,39 @@ import json
 import re
 import requests
 import configparser
+import subprocess
+from collections import MutableMapping
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
 from ansible.inventory import Inventory
 
 
+def _merge_hash(a, b):
+    if a == {} or a == b:
+        return b.copy()
+    result = a.copy()
+    for k, v in b.iteritems():
+        if k in result and isinstance(result[k], MutableMapping) and isinstance(v, MutableMapping):
+            result[k] = _merge_hash(result[k], v)
+        else:
+            result[k] = v
+    return result
+
+
 class AnsibleDynamicInventory:
 
-    def load_config(self, filename):
+    def __init__(self, config_path):
+        config = self._load_config(config_path)
+        ansible_static_inventory = self._load_ansible_staitc_inventory(config)
+        ansible_static_inventory = self._convert_to_dynamic_inventory(ansible_static_inventory)
+        ansible_static_inventory = self._replace_with_consul_service(config, ansible_static_inventory)
+        ansible_dynamic_inventory = self._load_ansible_dynamic_inventory(config)
+        self.ansible_dynamic_inventory = _merge_hash(ansible_static_inventory, ansible_dynamic_inventory)
+
+    def get_inventory(self):
+        return self.ansible_dynamic_inventory
+
+    def _load_config(self, filename):
         if filename is None:
             for v in sys.path:
                 path = v + '/ansible_dynamic_inventory/ansible_dynamic_inventory.ini'
@@ -23,12 +48,22 @@ class AnsibleDynamicInventory:
         config.read(filename)
         return config
 
-    def load_ansible_staitc_inventory(self, config):
+    def _load_ansible_staitc_inventory(self, config):
+        inventory = dict()
         static_inventory_path = config.get("ansible", "static_inventory_path")
-        inventory = Inventory(DataLoader(), VariableManager(), static_inventory_path)
+        if static_inventory_path:
+            inventory = Inventory(DataLoader(), VariableManager(), static_inventory_path)
         return inventory
 
-    def convert_to_dynamic_inventory(aelf, ansible_static_inventory):
+    def _load_ansible_dynamic_inventory(self, config):
+        inventory = dict()
+        dynamic_inventory_path = config.get("ansible", "dynamic_inventory_path")
+        if dynamic_inventory_path:
+            inventory_json = subprocess.check_output([dynamic_inventory_path, '--list'], shell=True)
+            inventory = json.loads(inventory_json)
+        return inventory
+
+    def _convert_to_dynamic_inventory(aelf, ansible_static_inventory):
         ansible_dynamic_inventory = dict()
         for v in ansible_static_inventory.get_groups():
             ansible_dynamic_inventory[v] = dict()
@@ -48,7 +83,7 @@ class AnsibleDynamicInventory:
             ansible_dynamic_inventory["_meta"]["hostvars"][v.name] = dict(v.vars)
         return ansible_dynamic_inventory
 
-    def replace_with_consul_service(self, config, ansible_dynamic_inventory):
+    def _replace_with_consul_service(self, config, ansible_dynamic_inventory):
         consul_url = config.get("consul", "url")
         if len(consul_url) == 0:
             return ansible_dynamic_inventory
