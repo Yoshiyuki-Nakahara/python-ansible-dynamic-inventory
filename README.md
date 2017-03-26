@@ -45,10 +45,6 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
     #url = http://localhost:8500/v1
     url =
 
-    # Forcibly replace even if consul response the number of hosts is 0, yes or no
-    # If you choose no, if the response from consul does not have host information, use the ansible static inventory setting as is
-    force_replace_zero_hosts = no
-
 # Usage
     # Stand alone execution
     $ ansible-dynamic-inventory --list

@@ -49,19 +49,19 @@ class AnsibleDynamicInventory:
         return config
 
     def _load_ansible_staitc_inventory(self, config):
-        inventory = dict()
+        static_inventory = dict()
         static_inventory_path = config.get("ansible", "static_inventory_path")
         if static_inventory_path:
-            inventory = Inventory(DataLoader(), VariableManager(), static_inventory_path)
-        return inventory
+            static_inventory = Inventory(DataLoader(), VariableManager(), static_inventory_path)
+        return static_inventory
 
     def _load_ansible_dynamic_inventory(self, config):
-        inventory = dict()
+        dynamic_inventory = dict()
         dynamic_inventory_path = config.get("ansible", "dynamic_inventory_path")
         if dynamic_inventory_path:
-            inventory_json = subprocess.check_output([dynamic_inventory_path, '--list'], shell=True)
-            inventory = json.loads(inventory_json)
-        return inventory
+            dynamic_inventory_json = subprocess.check_output([dynamic_inventory_path, '--list'], shell=True)
+            dynamic_inventory = json.loads(dynamic_inventory_json)
+        return dynamic_inventory
 
     def _convert_to_dynamic_inventory(aelf, ansible_static_inventory):
         ansible_dynamic_inventory = dict()
@@ -87,12 +87,10 @@ class AnsibleDynamicInventory:
         consul_url = config.get("consul", "url")
         if len(consul_url) == 0:
             return ansible_dynamic_inventory
-
-        replace_force_zero_hosts = config.getboolean("consul", "force_replace_zero_hosts")
-        for v in ansible_group_dict.keys():
+        for v in ansible_dynamic_inventory.keys():
             res = requests.get(consul_url + "/catalog/service/" + v)
-            if res.status_code == requests.codes.ok and (len(res.json()) or replace_force_zero_hosts is True):
-                ansible_group_dict[v]["hosts"] = map(lambda x: x["ServiceAddress"], res.json())
+            if res.status_code == requests.codes.ok and len(res.json()):
+                ansible_dynamic_inventory[v]["hosts"] = map(lambda x: x["ServiceAddress"], res.json())
         return ansible_dynamic_inventory
 
     def convert_to_plantuml(self, ansible_dynamic_inventory):
@@ -111,16 +109,16 @@ class AnsibleDynamicInventory:
             else: # group definition
                 group_text = ""
                 group_vars_text = ""
-                if v.has_key("hosts"):
+                if "hosts" in v:
                     hostnames = list()
                     for hostname in v['hosts']:
                         hostnames.append(re.sub(host_name_regex, '_', hostname)) # use character limit for plantuml
                     group_join_text = "\n  " + group_name + "_hosts - "
                     group_text += group_join_text + group_join_text.join(hostnames) + "\n"
-                if v.has_key("vars"):
+                if "vars" in v:
                     group_text += "  class " + group_name + "_vars" + "\n"
                     group_vars_text += "class " + group_name + "_vars " + json.dumps(v['vars'], indent=2, separators=("", ": "))  + "\n"
-                if v.has_key("children"):
+                if "children" in v:
                     for children_group_name in v['children']:
                         children_group_name = re.sub(group_name_regex, '_', children_group_name) # use character limit for plantuml
                         group_text += "  " + group_name + "_children - " + children_group_name + "\n"
