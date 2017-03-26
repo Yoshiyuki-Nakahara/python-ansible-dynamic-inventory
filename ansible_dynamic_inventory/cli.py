@@ -20,11 +20,8 @@ def _parse_program_args():
 
 def main():
     args = _parse_program_args()
-    adi = AnsibleDynamicInventory()
-    config = adi.load_config(args['config'])
-    ansible_static_inventory = adi.load_ansible_staitc_inventory(config)
-    ansible_dynamic_inventory = adi.convert_to_dynamic_inventory(ansible_static_inventory)
-    ansible_dynamic_inventory = adi.replace_with_consul_service(config, ansible_dynamic_inventory)
+    adi = AnsibleDynamicInventory(args['config'])
+    ansible_dynamic_inventory = adi.get_inventory()
     if args["plantuml"]:
         plantuml_text = adi.convert_to_plantuml(ansible_dynamic_inventory)
         print(plantuml_text)
