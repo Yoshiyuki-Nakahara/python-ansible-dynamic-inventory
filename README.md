@@ -27,8 +27,23 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
 # Prerequisite of Replace with Consul Service
   If the group name written in the ansible static inventory and the service name registered in the consul service are the same, the host name is replaced.
 
+# Usage
+    # Stand alone execution
+    $ ansible-dynamic-inventory --list
+
+    # Stand alone execution and specified config file
+    $ ansible-dynamic-inventory --list --config /path/to/config
+    # or Specify config file with environment variable
+    $ ANSIBLE_DYNAMIC_INVENTORY_CONFIG_PATH=/path/to/config ansible-dynamic-inventory --list
+
+    # As Ansible Dynamic Inventory execution
+    $ ansible-playbook --inventory ansible-dynamic-inventory /path/to/playbook.yml
+
+    # outut in platuml format
+    ansible-dynamic-inventory --plantuml
+
 # Configuration
-    # vi ${module_installed_path}/ansible_dynamic_inventory.ini
+    # vi ansible_dynamic_inventory.ini
 
     [ansible]
     # If both static_inventory_path and dynamic_inventory_path are specified,
@@ -44,16 +59,6 @@ Optionally, Replace the host list of ansible static inventory with ServiceAddres
     [consul]
     #url = http://localhost:8500/v1
     url =
-
-# Usage
-    # Stand alone execution
-    $ ansible-dynamic-inventory --list
-
-    # As Ansible Dynamic Inventory execution
-    $ ansible-playbook --inventory ansible-dynamic-inventory /path/to/playbook.yml
-
-    # outut in platuml format
-    ansible-dynamic-inventory --plantuml
 
 # Stand alone execution example
     ex. ansible:static_inventory_path = ${this repository}/sample_inventory
