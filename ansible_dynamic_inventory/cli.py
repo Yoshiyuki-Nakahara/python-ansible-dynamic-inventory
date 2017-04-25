@@ -15,7 +15,10 @@ def _parse_program_args():
     parser.add_argument('--list', action='store_true', help='print dynamic inventory')
     parser.add_argument('--plantuml', action='store_true', help='print plantuml format')
     parser.add_argument('--config', action='store', help='path to ansible_dynamic_inventory.ini')
-    return vars(parser.parse_args())
+    args = vars(parser.parse_args())
+    if args['config'] is None and 'ANSIBLE_DYNAMIC_INVENTORY_INI_PATH' in os.environ:
+        args['config'] = os.environ['ANSIBLE_DYNAMIC_INVENTORY_INI_PATH']
+    return args
 
 
 def main():
